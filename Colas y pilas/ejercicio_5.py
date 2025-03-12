@@ -20,20 +20,31 @@ class QuickChat:
 
     def __repr__(self):
         return str(self.q)
-    
-    def eliminacion(self):
-        pass
 
-# Ejemplo de uso
+    def filtrar_duplicados(self):
+        mensajes_vistos = set()
+        cola_filtrada = QuickChat()
+
+        while not self.is_empty():
+            mensaje = self.dequeue()
+            if mensaje not in mensajes_vistos:
+                mensajes_vistos.add(mensaje)
+                cola_filtrada.enqueue(mensaje)
+
+        return cola_filtrada
+
 q = QuickChat()
-q.enqueue("Hola como estas")
-q.enqueue("¿Cómo estas?")
-q.enqueue("Adios")
-q.enqueue("Adios")
-q.enqueue("Ayuda")
-print(q)
-q.dequeue()
-print(q)
+q.enqueue('Hola')
+q.enqueue("¿Cómo estás?")
+q.enqueue("Hola")
+q.enqueue("Nos vemos")
+q.enqueue("Ok")
+q.enqueue("¿Cómo estás?")
+q.enqueue("Ok")
+q.enqueue("Ok")
+
+chat_filtrado = q.filtrar_duplicados()
+print(chat_filtrado)
 
 
 
