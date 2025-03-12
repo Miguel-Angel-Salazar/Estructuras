@@ -25,13 +25,16 @@ class QuickChat:
         mensajes_vistos = set()
         cola_filtrada = QuickChat()
 
-        while not self.is_empty():
+        def _filtrar_recursivo():
+            if self.is_empty():
+                return cola_filtrada
             mensaje = self.dequeue()
             if mensaje not in mensajes_vistos:
                 mensajes_vistos.add(mensaje)
                 cola_filtrada.enqueue(mensaje)
+            return _filtrar_recursivo()
 
-        return cola_filtrada
+        return _filtrar_recursivo()
 
 q = QuickChat()
 q.enqueue('Hola')
@@ -44,7 +47,7 @@ q.enqueue("Ok")
 q.enqueue("Ok")
 
 chat_filtrado = q.filtrar_duplicados()
-print(chat_filtrado)
+print(chat_filtrado)  
 
 
 
