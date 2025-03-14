@@ -23,17 +23,13 @@ class Stack:
             raise Pila_vacia("No hay elementos. Esta vacia")
         return self.pila[-1]
     
-    def contar_elementos(self):
-        print(self.__len__)
-        if not self.empty:
-            for elemento in self.elementos:
-                print(f"{elemento}")
-            print("Lista original")
-            print(self.elementos)
-        else:
-            print("Lista Vacia")
+    def invertir(self) -> None:
+        lista_inversa = []
+        while not self.empty():
+            lista_inversa.append(self.pop())
+        self.pila = lista_inversa
 
-            
+
     def __repr__(self):
         return str(self.pila)
     
@@ -41,10 +37,15 @@ class Stack:
         return len(self.pila)
     
 p = Stack()
-p.push(6)
+p.push(1)
+print(p)
+p.push(2)
 print(p)
 p.push(3)
 print(p)
-print(p.pop())
-print()
-
+p.push(4)
+print(p)
+print(p.peek())
+p.invertir()
+print(p)
+print(p.peek())
