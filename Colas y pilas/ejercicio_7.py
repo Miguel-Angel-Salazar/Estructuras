@@ -24,8 +24,16 @@ class Stack:
         return self.pila[-1]
     
     def contar_elementos(self):
-        pass
-    
+        print(self.__len__)
+        if not self.empty:
+            for elemento in self.elementos:
+                print(f"{elemento}")
+            print("Lista original")
+            print(self.elementos)
+        else:
+            print("Lista Vacia")
+
+            
     def __repr__(self):
         return str(self.pila)
     
@@ -38,5 +46,5 @@ print(p)
 p.push(3)
 print(p)
 print(p.pop())
-print(p.peek())
+print()
 
