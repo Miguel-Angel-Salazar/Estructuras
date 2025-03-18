@@ -1,3 +1,6 @@
+class Pila_vacia(Exception):
+    pass
+
 class Stack:
     def __init__(self):
         self.pila = []
@@ -23,25 +26,22 @@ class Stack:
 
     def __len__(self):
         return len(self.pila)
-
     
     def imprimir_y_restaurar(self):
-        temp = []  
-        while not self.empty():
-            elemento = self.pop()  
-            print(elemento) 
-            temp.append(elemento)  
-        
+        if not self.empty():
+            elemento = self.pop()
+            self.imprimir_y_restaurar()
+            print(elemento)
+            self.push(elemento)
 
-# Ejemplo de uso
-p = Stack()
-p.push(6)
-p.push(3)
-p.push(8)
-p.push(1)
 
-# Usamos el nuevo método
-p.imprimir_y_restaurar()
+if __name__ == "__main__":
+    p = Stack()
+    p.push(6)
+    p.push(3)
+    p.push(8)
+    p.push(1)
 
-# Imprimimos la pila para verificar que se ha restaurado
-print(p)
+    print("Contenido en orden de entrada:")
+    p.imprimir_y_restaurar()  
+    print(p)  
