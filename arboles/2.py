@@ -37,19 +37,21 @@ class GeneralTree:
 
     def Eliminar(self, value, node=None):
         if node is None:
-            node = self.root  
-        if node is None: 
+            node = self.root
+        if node is None:  # Árbol vacío
             return False
         
-        for i in range(len(node.children)):
-               if node.children[i].value == value:
-                  node.children.pop(i)
-                  return True                
+        for i in reversed(range(len(node.children))):
+            if node.children[i].value == value:
+                node.children.pop(i)
+                return True
         
-        for child in node.children: 
+        for child in node.children:
             if self.Eliminar(value, child):
                 return True
-        return False 
+    
+        return False
+
 
     def __repr__(self):
         return self.root._repr() if self.root else "<árbol vacío>"
