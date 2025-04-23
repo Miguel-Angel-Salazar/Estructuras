@@ -39,22 +39,25 @@ class BinaryTree:
                 else:
                     self.insert(value, current_node.rightchild)
 
-    def buscar(self, value, node=None):
+    def contar_hojas(self, node=None):
+        if self.root is None:
+            raise Exception("El árbol está vacío")
         if node is None:
-            node = self.root  
-        if node is None: 
-            return False
-        if node.value == value: 
-            return True
-        if value < node.value:
-            return self.buscar(value, node.leftchild)
-        else:
-            return self.buscar(value, node.rightchild)
+            node = self.root
+        if node.leftchild is None and node.rightchild is None:
+            return 1
+        hojas_izq = 0
+        hojas_der = 0
+        if node.leftchild:
+            hojas_izq = self.contar_hojas(node.leftchild)
+        if node.rightchild:
+            hojas_der = self.contar_hojas(node.rightchild)
+        return hojas_izq + hojas_der
 
 arbol = BinaryTree()
-for val in [100, 50,20,55,53]:  
+for val in [50, 30, 70, 20, 40, 60]:  
     arbol.insert(val)
 
 print(arbol.root)
-
-print(arbol.buscar(50))
+cantidad_hojas = arbol.contar_hojas()
+print(f"El árbol tiene {cantidad_hojas} hojas.")
