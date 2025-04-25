@@ -153,6 +153,37 @@ class Playlist:
             current = current.next
         print("\n❌ Canción no encontrada")
 
+# Eliminar las canciones del artista que menos tiene
+    def delete_least_frequent_artist(self):
+        if self.songs.size == 0: #compara para ver si esta hacia la lista
+            print("\n⚠️  La playlist está vacía")
+            return
+
+        artist_count = {} #almacena los valore del artista y la canciones
+        current = self.songs.head # para poder recorrer todo desde la cabeza
+        while current: #recorre todos los nodos
+            artist = current.value.artist.lower() # pone el combre de los artistas en minus para evitar errores 
+            artist_count[artist] = artist_count.get(artist, 0) + 1 #un contador para guardar a los artistas y va sumando
+            current = current.next #acceder al valor del siguiente nodo
+
+        min_count = min(artist_count.values(), default=0) #para asi guardar los valores minimos de las canciones que hay, y se ponde el default para evitar errores por si esta vacia 
+        least_artists = [artist for artist, count in artist_count.items() if count == min_count] #para guardar a los artistas y sus canciones, el artist_count.items para guardar los valores en el diccionario, ademas el count == min_count filtra a los artistas los cuales sus canciones sean iguales al minimo
+        
+        nodes_to_remove = [] #almacenara los nodos que deseo eliminar
+        current = self.songs.head # para poder recorrer todos los nodos desde la cabeza
+        while current: #recorre toda la lista
+            if current.value.artist.lower() in least_artists: #verificar si el artista se encuentra en la lista de least_artistis
+                nodes_to_remove.append(current)# si el artista esta se añade
+            current = current.next #acceder al siguiente
+
+        for node in nodes_to_remove: #recorre los nodos que se encuetran en nodes_to_remove
+            self.songs.remove(node) #se van a remover los nodos 
+            if self.current_song == node:#se comparan el current con el node para ver si son la misma cancion
+                self.current_song = self.songs.head if self.songs.size > 0 else None # el current_song es igual a las canciones que se encuentran en la cabeza entoncces son mas de 0 sino no hay nada
+
+        print(f"\n🗑️  Eliminadas {len(nodes_to_remove)} canciones de: {artist}") #imprime la cantidad de canciones eliminadas con el len(nodes_to_remove) y el nombre del artista
+            
+
     # Muestra la canción actual
     def show_current(self):
         if self.current_song:
@@ -279,6 +310,7 @@ def main():
         print("8️⃣  Adelantar canción")
         print("9️⃣  Generar subplaylist")
         print("🔟  Reproducir canción actual")
+        print("1️⃣2️⃣  Eliminar artistas menos frecuentes")
         print("⏹   Salir")
         
         choice = input("\n👉  Seleccione una opción: ").strip()
@@ -349,6 +381,10 @@ def main():
                 playlist.simulate_playback()
             else:
                 print("\n⚠️  No hay canción seleccionada")
+
+        elif choice == "12":
+            playlist.delete_least_frequent_artist()
+
         
         # Opción Salir
         elif choice.lower() in ["salir", "exit", "⏹"]:
