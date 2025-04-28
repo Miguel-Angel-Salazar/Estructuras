@@ -46,13 +46,12 @@ class BinaryTree:
             node = self.root
         if node.leftchild is None and node.rightchild is None:
             return 1
-        hojas_izq = 0
-        hojas_der = 0
+        contador = 0
         if node.leftchild:
-            hojas_izq = self.contar_hojas(node.leftchild)
+            contador += self.contar_hojas(node.leftchild)
         if node.rightchild:
-            hojas_der = self.contar_hojas(node.rightchild)
-        return hojas_izq + hojas_der
+            contador += self.contar_hojas(node.rightchild)
+        return contador
 
 arbol = BinaryTree()
 for val in [50, 30, 70, 20, 40, 60]:  
