@@ -310,7 +310,7 @@ def main():
         print("8️⃣  Adelantar canción")
         print("9️⃣  Generar subplaylist")
         print("🔟  Reproducir canción actual")
-        print("1️⃣2️⃣  Eliminar artistas menos frecuentes")
+        print("1️⃣ 2️⃣  Eliminar artistas menos frecuentes")
         print("⏹   Salir")
         
         choice = input("\n👉  Seleccione una opción: ").strip()
