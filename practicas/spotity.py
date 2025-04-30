@@ -217,14 +217,14 @@ class Playlist:
 
     # Genera lista aleatoria sin repeticiones
     def _generate_shuffle_list(self):
-        nodes = []
         current = self.songs.head
         while current:
-            nodes.append(current)
+            self.shuffle_list.append(current)
             current = current.next
-        random.shuffle(nodes)
-        self.shuffle_list = nodes.copy()
+        random.shuffle(self.shuffle_list)
+        self.shuffle_list = self.shuffle_list.copy()
         self.current_shuffle_idx = 0
+        print(self.shuffle_list)
 
     # Maneja la navegación en modo shuffle
     def _handle_shuffle_next(self):
