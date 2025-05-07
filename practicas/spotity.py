@@ -2,9 +2,9 @@ import random
 import time
 import sys
 
-# =============================================
+
 # Clase Nodo Doblemente Enlazado (Dnode)
-# =============================================
+
 class Dnode:
     def __init__(self, value, next=None, prev=None):
         self.value = value    # Valor almacenado (canción)
@@ -14,9 +14,9 @@ class Dnode:
     def __repr__(self):
         return str(self.value)  # Representación legible del nodo
 
-# =============================================
-# Lista Doblemente Enlazada (DoubleLinkedList)
-# =============================================
+
+# Lista Doblemente Enlazada 
+
 class DoubleLinkedList:
     def __init__(self):
         self.head = None      # Primer nodo de la lista
@@ -72,9 +72,9 @@ class DoubleLinkedList:
             current = current.next
         return "[ <-> ".join(elements) + "]"
 
-# =============================================
-# Clase Canción (Song)
-# =============================================
+
+# Clase Canción 
+
 class Song:
     def __init__(self, title: str, artist: str, duration: int):
         self.title = title
@@ -84,9 +84,9 @@ class Song:
     def __repr__(self):
         return f"{self.title} - {self.artist} ({self.duration}s)"  # Formato canción
 
-# =============================================
+
 # Clase Playlist
-# =============================================
+
 class Playlist:
     def __init__(self):
         self.songs = DoubleLinkedList()   # Lista de canciones
@@ -155,34 +155,33 @@ class Playlist:
 
 # Eliminar las canciones del artista que menos tiene
     def delete_least_frequent_artist(self):
-        if self.songs.size == 0: #compara para ver si esta hacia la lista
+        if self.songs.size == 0: 
             print("\n⚠️  La playlist está vacía")
             return
 
-        artist_count = {} #almacena los valore del artista y la canciones
-        current = self.songs.head # para poder recorrer todo desde la cabeza
-        while current: #recorre todos los nodos
-            artist = current.value.artist.lower() # pone el combre de los artistas en minus para evitar errores 
-            artist_count[artist] = artist_count.get(artist, 0) + 1 #un contador para guardar a los artistas y va sumando
-            current = current.next #acceder al valor del siguiente nodo
+        artist_count = {} 
+        current = self.songs.head 
+        while current: 
+            artist = current.value.artist.lower() 
+            artist_count[artist] = artist_count.get(artist, 0) + 1 
+            current = current.next 
 
-        min_count = min(artist_count.values(), default=0) #para asi guardar los valores minimos de las canciones que hay, y se ponde el default para evitar errores por si esta vacia 
-        least_artists = [artist for artist, count in artist_count.items() if count == min_count] #para guardar a los artistas y sus canciones, el artist_count.items para guardar los valores en el diccionario, ademas el count == min_count filtra a los artistas los cuales sus canciones sean iguales al minimo
+        min_count = min(artist_count.values(), default=0) 
+        least_artists = [artist for artist, count in artist_count.items() if count == min_count] 
         
-        nodes_to_remove = [] #almacenara los nodos que deseo eliminar
-        current = self.songs.head # para poder recorrer todos los nodos desde la cabeza
-        while current: #recorre toda la lista
-            if current.value.artist.lower() in least_artists: #verificar si el artista se encuentra en la lista de least_artistis
-                nodes_to_remove.append(current)# si el artista esta se añade
-            current = current.next #acceder al siguiente
+        nodes_to_remove = [] 
+        current = self.songs.head 
+        while current: 
+            if current.value.artist.lower() in least_artists: 
+                nodes_to_remove.append(current)
+            current = current.next 
 
-        for node in nodes_to_remove: #recorre los nodos que se encuetran en nodes_to_remove
-            self.songs.remove(node) #se van a remover los nodos 
-            if self.current_song == node:#se comparan el current con el node para ver si son la misma cancion
-                self.current_song = self.songs.head if self.songs.size > 0 else None # el current_song es igual a las canciones que se encuentran en la cabeza entoncces son mas de 0 sino no hay nada
+        for node in nodes_to_remove: 
+            self.songs.remove(node) 
+            if self.current_song == node:
+                self.current_song = self.songs.head if self.songs.size > 0 else None 
 
-        print(f"\n 🗑️ Eliminadas {len(nodes_to_remove)} canciones de: {', '.join(least_artists)}") #imprime la cantidad de canciones eliminadas con el len(nodes_to_remove) y el nombre del artista
-            
+        print(f"\n 🗑️ Eliminadas {len(nodes_to_remove)} canciones de: {', '.join(least_artists)}") 
 
     # Muestra la canción actual
     def show_current(self):
@@ -223,7 +222,7 @@ class Playlist:
             self.shuffle_list.append(current)
             current = current.next
         random.shuffle(self.shuffle_list)
-        self.current_shuffle_idx = 0# Muestra la lista (opcional)
+        self.current_shuffle_idx = 0 # Muestra la lista (opcional)
 
     # Maneja la navegación en modo shuffle
     def _handle_shuffle_next(self):
@@ -251,11 +250,11 @@ class Playlist:
         
         if skip_time >= song.duration:
             print(f"\n⏩ Adelanto completo ({song.duration}s)")
-            self.next_song()
+            self.next_song()  
         else:
             print(f"\n⏭ Adelantando {skip_time:.1f}s en '{song.title}'")
-            time.sleep(skip_time)
-            self.simulate_playback(skip_time)
+            self.simulate_playback(skip_time)  
+
 
     # Simula la reproducción con barra de progreso
     def simulate_playback(self, start=0):
@@ -266,7 +265,7 @@ class Playlist:
         print(f"\n▶️  Reproduciendo: {song}")
         
         for sec in range(int(start), song.duration):
-            progress = (sec + 1) / song.duration * 50  # 50 caracteres de ancho
+            progress = (sec + 1) / song.duration * 50  
             bar = "[" + "=" * int(progress) + " " * (50 - int(progress)) + "]"
             sys.stdout.write(f"\r⏳ {sec+1}s {bar}")
             sys.stdout.flush()
@@ -289,9 +288,9 @@ class Playlist:
         print(f"\n🎉 Subplaylist creada con {sub.songs.size} canciones")
         return sub
 
-# =============================================
+
 # Interfaz de Usuario
-# =============================================
+
 def main():
     playlist = Playlist()
     
