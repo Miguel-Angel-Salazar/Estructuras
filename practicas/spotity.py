@@ -193,31 +193,6 @@ class Playlist:
 
         print(f"Se redujo -1s a las canciones de {moda}s")
 
-    def modas(self):
-        if self.songs.size == 0: 
-            print("\n⚠️  La playlist está vacía")
-            return
-
-        frecuencias = {}
-        current = self.songs.head
-        while current:
-            dur = current.value.duration
-            if dur in frecuencias:
-                frecuencias[dur] += 1
-            else:
-                frecuencias[dur] = 1
-            current = current.next
-
-        moda = max(frecuencias, key=frecuencias.__getitem__)
-
-        current = self.songs.head
-        while current:
-            if current.value.duration == moda and current.value.duration > 10:
-                current.value.duration -= 1
-            current = current.next
-
-        print(f"Se redujo -1s a las canciones de {moda}s")
-
     # Muestra la canción actual
     def show_current(self):
         if self.current_song:
@@ -323,6 +298,20 @@ class Playlist:
         print(f"\n🎉 Subplaylist creada con {sub.songs.size} canciones")
         return sub
     
+    def subplaylistcorta(self,titles:list):
+        sub_1 = Playlist()
+        
+        current = self.songs.head
+        while current:
+            if current.value.duration <= 13:
+                sub_1.add_song(current.value)
+            current = current.next
+
+        print(f"\n🎉 Subplaylist creada con {sub_1.songs.size} canciones")
+        return sub_1
+
+
+    
 # Interfaz de Usuario
 
 def main():
@@ -344,7 +333,7 @@ def main():
         print("🔟  Reproducir canción actual")
         print("1️⃣ 2️⃣  Eliminar artistas menos frecuentes")
         print("1️⃣ 3️⃣   Reducir cancion moda")
-        print("1️⃣ 4️⃣  Restar tiempo moda")
+        print("1️⃣ 4️⃣ subplaylist de canciones cortas")
         print("⏹   Salir")
         
         choice = input("\n👉  Seleccione una opción: ").strip()
@@ -412,8 +401,14 @@ def main():
         elif choice == "13":
             playlist.moda()
 
-        elif choice == "14":
-            playlist.modas()
+        elif choice =="14":
+
+            titles = input("\nIngrese títulos (separados por coma): ").split(",")
+            sub_1 = playlist.subplaylistcorta(titles)
+            if sub_1.songs.size > 0:
+                if input("¿Usar esta subplaylist ahora? (s/n): ").lower() == "s":
+                    playlist = sub_1
+                    print("\n🔄 Playlist principal actualizada!")
 
         elif choice.lower() in ["salir", "exit", "⏹"]:
             print("\n🎶  Gracias por usar la playlist!  🎶")
