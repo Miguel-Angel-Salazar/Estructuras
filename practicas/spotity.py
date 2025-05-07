@@ -181,7 +181,7 @@ class Playlist:
             if self.current_song == node:#se comparan el current con el node para ver si son la misma cancion
                 self.current_song = self.songs.head if self.songs.size > 0 else None # el current_song es igual a las canciones que se encuentran en la cabeza entoncces son mas de 0 sino no hay nada
 
-        print(f"\n🗑️  Eliminadas {len(nodes_to_remove)} canciones de: {artist}") #imprime la cantidad de canciones eliminadas con el len(nodes_to_remove) y el nombre del artista
+        print(f"\n 🗑️ Eliminadas {len(nodes_to_remove)} canciones de: {', '.join(least_artists)}") #imprime la cantidad de canciones eliminadas con el len(nodes_to_remove) y el nombre del artista
             
 
     # Muestra la canción actual
@@ -217,14 +217,13 @@ class Playlist:
 
     # Genera lista aleatoria sin repeticiones
     def _generate_shuffle_list(self):
+        self.shuffle_list = []
         current = self.songs.head
         while current:
             self.shuffle_list.append(current)
             current = current.next
         random.shuffle(self.shuffle_list)
-        self.shuffle_list = self.shuffle_list.copy()
-        self.current_shuffle_idx = 0
-        print(self.shuffle_list)
+        self.current_shuffle_idx = 0# Muestra la lista (opcional)
 
     # Maneja la navegación en modo shuffle
     def _handle_shuffle_next(self):
