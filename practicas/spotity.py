@@ -7,21 +7,19 @@ import sys
 
 class Dnode:
     def __init__(self, value, next=None, prev=None):
-        self.value = value    # Valor almacenado (canción)
-        self.next = next      # Referencia al siguiente nodo
-        self.prev = prev      # Referencia al nodo anterior
+        self.value = value    
+        self.next = next      
+        self.prev = prev      
 
     def __repr__(self):
-        return str(self.value)  # Representación legible del nodo
-
+        return str(self.value)  
 
 # Lista Doblemente Enlazada 
-
 class DoubleLinkedList:
     def __init__(self):
-        self.head = None      # Primer nodo de la lista
-        self.tail = None      # Último nodo de la lista
-        self.size = 0         # Cantidad de elementos
+        self.head = None      
+        self.tail = None      
+        self.size = 0         
 
     # Añade un nodo al final de la lista
     def append(self, value):
@@ -39,21 +37,14 @@ class DoubleLinkedList:
         if self.size == 0:
             raise Exception("Lista vacía")
 
-        # Caso: Único nodo
         if self.size == 1:
             self.head = self.tail = None
-        
-        # Caso: Nodo es la cabeza
         elif node == self.head:
             self.head = self.head.next
             self.head.prev = None
-        
-        # Caso: Nodo es la cola
         elif node == self.tail:
             self.tail = self.tail.prev
             self.tail.next = None
-        
-        # Caso: Nodo en medio
         else:
             node.prev.next = node.next
             node.next.prev = node.prev
@@ -73,16 +64,14 @@ class DoubleLinkedList:
         return "[ <-> ".join(elements) + "]"
 
 
-# Clase Canción 
-
 class Song:
     def __init__(self, title: str, artist: str, duration: int):
         self.title = title
         self.artist = artist
-        self.duration = duration  # Duración en segundos (10-15)
+        self.duration = duration  
 
     def __repr__(self):
-        return f"{self.title} - {self.artist} ({self.duration}s)"  # Formato canción
+        return f"{self.title} - {self.artist} ({self.duration}s)"  
 
 
 # Clase Playlist
@@ -182,6 +171,52 @@ class Playlist:
                 self.current_song = self.songs.head if self.songs.size > 0 else None 
 
         print(f"\n 🗑️ Eliminadas {len(nodes_to_remove)} canciones de: {', '.join(least_artists)}") 
+
+    def moda(self):
+        if self.songs.size == 0: 
+            print("\n⚠️  La playlist está vacía")
+            return
+
+        frecuencias = {}
+        current = self.songs.head
+        while current:
+            frecuencias[current.value.duration] = frecuencias.get(current.value.duration, 0) + 1
+            current = current.next
+
+        moda = max(frecuencias, key=frecuencias.get)
+
+        current = self.songs.head
+        while current:
+            if current.value.duration == moda and current.value.duration > 10:
+                current.value.duration -= 1
+            current = current.next
+
+        print(f"Se redujo -1s a las canciones de {moda}s")
+
+    def modas(self):
+        if self.songs.size == 0: 
+            print("\n⚠️  La playlist está vacía")
+            return
+
+        frecuencias = {}
+        current = self.songs.head
+        while current:
+            dur = current.value.duration
+            if dur in frecuencias:
+                frecuencias[dur] += 1
+            else:
+                frecuencias[dur] = 1
+            current = current.next
+
+        moda = max(frecuencias, key=frecuencias.__getitem__)
+
+        current = self.songs.head
+        while current:
+            if current.value.duration == moda and current.value.duration > 10:
+                current.value.duration -= 1
+            current = current.next
+
+        print(f"Se redujo -1s a las canciones de {moda}s")
 
     # Muestra la canción actual
     def show_current(self):
@@ -287,8 +322,7 @@ class Playlist:
         
         print(f"\n🎉 Subplaylist creada con {sub.songs.size} canciones")
         return sub
-
-
+    
 # Interfaz de Usuario
 
 def main():
@@ -309,11 +343,12 @@ def main():
         print("9️⃣  Generar subplaylist")
         print("🔟  Reproducir canción actual")
         print("1️⃣ 2️⃣  Eliminar artistas menos frecuentes")
+        print("1️⃣ 3️⃣   Reducir cancion moda")
+        print("1️⃣ 4️⃣  Restar tiempo moda")
         print("⏹   Salir")
         
         choice = input("\n👉  Seleccione una opción: ").strip()
         
-        # Opción 1: Añadir canción
         if choice == "1":
             print("\n" + "-"*30)
             title = input("Título: ").strip()
@@ -331,32 +366,25 @@ def main():
             
             playlist.add_song(Song(title, artist, duration))
         
-        # Opción 2: Siguiente canción
         elif choice == "2":
             playlist.next_song()
         
-        # Opción 3: Canción anterior
         elif choice == "3":
             playlist.previous_song()
         
-        # Opción 4: Eliminar canción
         elif choice == "4":
             title = input("\nTítulo a eliminar: ").strip()
             playlist.delete_song(title)
         
-        # Opción 5: Mostrar actual
         elif choice == "5":
             playlist.show_current()
         
-        # Opción 6: Mostrar todas
         elif choice == "6":
             playlist.show_all()
         
-        # Opción 7: Modo aleatorio
         elif choice == "7":
             playlist.toggle_shuffle()
         
-        # Opción 8: Adelantar
         elif choice == "8":
             try:
                 pct = float(input("\nPorcentaje a adelantar: "))
@@ -364,7 +392,6 @@ def main():
             except:
                 print("⚠️  Ingrese un valor numérico válido")
         
-        # Opción 9: Subplaylist
         elif choice == "9":
             titles = input("\nIngrese títulos (separados por coma): ").split(",")
             sub = playlist.create_subplaylist(titles)
@@ -372,8 +399,7 @@ def main():
                 if input("¿Usar esta subplaylist ahora? (s/n): ").lower() == "s":
                     playlist = sub
                     print("\n🔄 Playlist principal actualizada!")
-        
-        # Opción 10: Reproducir
+
         elif choice == "10":
             if playlist.current_song:
                 playlist.simulate_playback()
@@ -383,8 +409,12 @@ def main():
         elif choice == "12":
             playlist.delete_least_frequent_artist()
 
-        
-        # Opción Salir
+        elif choice == "13":
+            playlist.moda()
+
+        elif choice == "14":
+            playlist.modas()
+
         elif choice.lower() in ["salir", "exit", "⏹"]:
             print("\n🎶  Gracias por usar la playlist!  🎶")
             break
