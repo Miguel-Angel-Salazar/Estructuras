@@ -305,6 +305,8 @@ class Playlist:
         while current:
             if current.value.duration <= 13:
                 sub_1.add_song(current.value)
+            else:
+                print("no cumple con el tiempo")
             current = current.next
 
         print(f"\n🎉 Subplaylist creada con {sub_1.songs.size} canciones")
