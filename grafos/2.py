@@ -86,6 +86,6 @@ g.add_edge("L", "A")
 g.add_edge("L", "Z")
 g.add_edge("L", "O")
 print(g)
-
+print(g.encontrar_palabra("HOLA"))
 
 g.DFS("O")
