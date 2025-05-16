@@ -39,13 +39,13 @@ class Graph:
         return visitado
 
     def contar_componentes_conexas(self) -> int:
-        visitados = set()
+        visitados = []
         componentes = 0
 
         for nodo in self.adj_list:
             if nodo not in visitados:
                 resultado = self.dfs(nodo)
-                visitados.update(resultado)
+                visitados.extend(resultado) # si se hace con el append lo que se logra es que se comparen listas de listas, no el nodo invidivual, por eso el extend
                 componentes += 1
 
         return componentes
