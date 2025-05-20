@@ -69,19 +69,19 @@ class Graph:
                 contador += 1
         return contador
 
-    def desconectados(self):
+    def desconectados_1(self):
             d = []
             for nodo in self.adj_list:
                 if len(self.adj_list[nodo]) == 0 and self.entradas(nodo) == 0:
-                    contador += 1
-            return contador
+                    d.append(nodo)
+            return d
 
     def bfs(self, inicio):
         if inicio not in self.adj_list:
             return []
 
         visitado = []
-        cola = [inicio]+
+        cola = [inicio]
         while cola:
             nodo = cola.pop(0)  # Simula cola FIFO
             if nodo not in visitado:
@@ -115,5 +115,5 @@ print(g.entradas("A"))
 print(g.salidas("L"))
 print(g.eliminar("L"))
 print(g)
+print(g.desconectados_1())
 print(g.desconectados())
-
