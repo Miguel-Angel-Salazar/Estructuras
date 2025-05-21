@@ -63,8 +63,8 @@ class Graph:
         return visitado
 
 
-    def rutas_con_pesos(self, inicio, visitados=None, peso_actual=0):
-        if visitados is None:
+    def rutas(self, inicio, visitados = None):
+        if visitados  is  None:
             visitados = [inicio]
         else:
             visitados = visitados + [inicio]
@@ -72,16 +72,34 @@ class Graph:
         rutas_encontradas = []
 
         if not self.adj_list[inicio]:
-            rutas_encontradas.append((visitados, peso_actual))
+            rutas_encontradas.append(visitados)
         else:
-            for vecino, peso in self.adj_list[inicio]:
+            for vecino, i in self.adj_list[inicio]:
                 if vecino not in visitados:
-                    nuevas_rutas = self.rutas_con_pesos(vecino, visitados, peso_actual + peso)
+                    nuevas_rutas = self.rutas(vecino, visitados)
                     rutas_encontradas.append(nuevas_rutas)
 
         return rutas_encontradas
     
-    
+    def pesos(self, inicio, visitados=None, peso_actual=0):
+        if visitados is None:
+            visitados = [inicio]
+        else:
+            visitados = visitados + [inicio]
+
+        if not self.adj_list[inicio]:
+            return [peso_actual]
+        else:
+            pesos_encontrados = []
+            for vecino, peso in self.adj_list[inicio]:
+                if vecino not in visitados:
+                    nuevos_pesos = self.pesos(vecino, visitados, peso_actual + peso)
+                    pesos_encontrados.append(nuevos_pesos)
+            return pesos_encontrados
+
+        
+
+
     def __repr__(self):
         return str(self.adj_list)
     
@@ -96,4 +114,5 @@ g.add_edge("C", "X", weight= 4)
 g.add_edge("D", "C", weight= 1)
 g.add_edge("E", "D", weight= 6)
 
-print(g.rutas_con_pesos("A"))
+print(g.rutas("A"))
+print(g.pesos("A"))
