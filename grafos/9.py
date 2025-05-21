@@ -63,39 +63,43 @@ class Graph:
         return visitado
 
 
-    def rutas(self, inicio, visitados = None):
-        if visitados  is  None:
-            visitados = [inicio]
-        else:
-            visitados = visitados + [inicio]
+    def rutas(self, inicio, visitados=None):
+        if inicio not in self.adj_list:
+            return []
 
-        rutas_encontradas = []
+        if visitados is None:
+            visitados = []
+
+        visitados.append(inicio)
 
         if not self.adj_list[inicio]:
-            rutas_encontradas.append(visitados)
-        else:
-            for vecino, i in self.adj_list[inicio]:
-                if vecino not in visitados:
-                    nuevas_rutas = self.rutas(vecino, visitados)
-                    rutas_encontradas.append(nuevas_rutas)
+            return [visitados.copy()]
+
+        rutas_encontradas = []
+        for vecino, _ in self.adj_list[inicio]:
+            if vecino not in visitados:
+                nuevas_rutas = self.rutas(vecino, visitados)
+                for ruta in nuevas_rutas:
+                    rutas_encontradas.append(ruta)
+
+        visitados.pop()
 
         return rutas_encontradas
+
     
     def pesos(self, inicio, visitados=None, peso_actual=0):
-        if visitados is None:
-            visitados = [inicio]
-        else:
-            visitados = visitados + [inicio]
+
+        visitados = visitados + [inicio] if visitados else [inicio]
 
         if not self.adj_list[inicio]:
             return [peso_actual]
-        else:
-            pesos_encontrados = []
-            for vecino, peso in self.adj_list[inicio]:
-                if vecino not in visitados:
-                    nuevos_pesos = self.pesos(vecino, visitados, peso_actual + peso)
-                    pesos_encontrados.append(nuevos_pesos)
-            return pesos_encontrados
+        
+        pesos_encontrados = []
+        for vecino, peso in self.adj_list[inicio]:
+            if vecino not in visitados:
+                nuevos_pesos = self.pesos(vecino, visitados, peso_actual + peso)
+                pesos_encontrados.append(nuevos_pesos)
+        return pesos_encontrados
 
         
 
